@@ -1,0 +1,211 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    tools:context="com.mb.android.lec.ui.LECCreateCardActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Recording Point: -"
+                            android:layout_gravity="center_horizontal"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <ImageView
+                            android:id="@+id/micImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:src="@android:drawable/presence_audio_online" />
+
+                        <LinearLayout
+                            android:id="@+id/linear1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/micImage"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/start"
+                                android:layout_width="110dp"
+                                android:layout_height="70dp"
+                                android:text="start" />
+
+                            <Button
+                                android:id="@+id/stop"
+                                android:layout_width="110dp"
+                                android:layout_height="70dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginLeft="10dp"
+                                android:enabled="false"
+                                android:text="stop" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linear2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/linear1"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/play"
+                                android:layout_width="110dp"
+                                android:layout_height="70dp"
+                                android:enabled="false"
+                                android:text="play" />
+
+                            <Button
+                                android:id="@+id/stopPlay"
+                                android:layout_width="110dp"
+                                android:layout_height="70dp"
+                                android:layout_marginLeft="10dp"
+                                android:enabled="false"
+                                android:text="stop playing" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Notes:"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.CardView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <EditText
+                        android:id="@+id/lec_card_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+
+                        />
+
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="25dp"
+                    android:orientation="horizontal">
+                <CheckBox
+                    android:id="@+id/reminder_chk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:layout_weight="1"
+                    android:text="Reminder"/>
+
+                <CheckBox
+                    android:id="@+id/current_location_chk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:layout_weight="1"
+                    android:text="Save Location"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </ScrollView>
+
+</RelativeLayout>

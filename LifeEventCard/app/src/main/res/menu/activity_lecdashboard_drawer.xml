@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_life_event"
+            android:icon="@drawable/ic_menu_event"
+            android:title="Life Events" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_profile"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/bowling"
+            android:title="Gallery"
+            android:visible="false"/>
+
+        <item
+            android:id="@+id/nav_lec_stored_cards"
+            android:icon="@drawable/bowling"
+            android:title="Saved Cards" />
+
+        <item
+            android:id="@+id/nav_lec_shared_cards"
+            android:icon="@drawable/bowling"
+            android:title="Shared Cards" />
+
+    </group>
+
+    <item android:title="Setting">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:title="About" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Logout" />
+
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="25dp"
+    android:gravity="center"
+    android:orientation="vertical">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/card_event_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Name"
+            android:inputType="textCapSentences"
+            android:maxLines="2"
+            android:singleLine="false" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/card_event_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Details"
+            android:inputType="text"
+            android:maxLines="3"
+            android:singleLine="false" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+</LinearLayout>

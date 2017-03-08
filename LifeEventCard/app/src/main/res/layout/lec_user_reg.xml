@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    tools:context=".ui.LECUserRegisterActivity">
+
+    <ProgressBar
+        android:id="@+id/reg_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reg_form">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--First Name-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/reg_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="First Name"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+        <!-- Last Name-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/reg_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Last Name"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Email ID-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/reg_emailid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Confirm Email-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/reg_confirm_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Email"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!-- Password -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/reg_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Confirm Password-->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/reg_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Password -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/reg_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number"
+                android:imeOptions="actionUnspecified"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/reg_lec_user_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/action_register"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    </ScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

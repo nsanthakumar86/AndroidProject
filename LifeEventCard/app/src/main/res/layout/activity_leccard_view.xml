@@ -1,0 +1,179 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@drawable/side_nav_bar"
+    >
+
+    <TextView
+        android:id="@+id/event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Good Day"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:paddingTop="15dp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/event_name"
+        android:background="@android:color/holo_blue_bright"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:scrollbars="none"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_img1"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_img2"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_img3"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_img4"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/lec_card_img4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/audio_layer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_gravity="center_horizontal"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <ImageView
+                            android:id="@+id/micImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:src="@android:drawable/presence_audio_online" />
+
+
+                        <LinearLayout
+                            android:id="@+id/linear2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/linear1"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:drawableBottom="@android:drawable/ic_media_play"
+                                android:id="@+id/play"
+                                android:layout_width="110dp"
+                                android:layout_height="70dp"
+                                android:enabled="false"
+                                android:text="play" />
+
+                            <Button
+                                android:drawableBottom="@android:drawable/ic_menu_close_clear_cancel"
+                                android:id="@+id/stopPlay"
+                                android:layout_width="110dp"
+                                android:layout_height="70dp"
+                                android:layout_marginLeft="10dp"
+                                android:enabled="false"
+                                android:text="Stop"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <TextView
+                    android:id="@+id/notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:textColor="@android:color/holo_blue_light"
+                    android:textStyle="bold" />
+
+
+
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </ScrollView>
+
+</RelativeLayout>
