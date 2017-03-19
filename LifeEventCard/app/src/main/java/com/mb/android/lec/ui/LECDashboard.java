@@ -39,6 +39,7 @@ public class LECDashboard extends AppCompatActivity
     private FragmentManager fragmentManager;
     private LECCardsTypeFragment lecCardsTypeFragment;
     private LECSavedCardsFragment savedCardsFragment;
+    private LECSharedCardsFragment sharedCardsFragment;
     private LECProfileFragment lecProfileFragment;
     private LECAboutFragment lecAboutFragment;
     private FloatingActionButton fab;
@@ -118,6 +119,7 @@ public class LECDashboard extends AppCompatActivity
         lecProfileFragment = LECProfileFragment.newInstance("","");
         lecAboutFragment = LECAboutFragment.newInstance("","");
         savedCardsFragment = LECSavedCardsFragment.newInstance();
+        sharedCardsFragment = LECSharedCardsFragment.newInstance();
 
         lecProfileFragment.setListener(new LECProfileFragment.OnFragmentInteractionListener() {
             @Override
@@ -147,8 +149,8 @@ public class LECDashboard extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.lecdashboard, menu);
-        return true;
+            getMenuInflater().inflate(R.menu.lecdashboard, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -209,7 +211,8 @@ public class LECDashboard extends AppCompatActivity
 
             if(fab.isShown())
                 fab.hide();
-            Toast.makeText(LECDashboard.this, "Shared LEC Cards", Toast.LENGTH_SHORT).show();
+            fragmentManager.beginTransaction().replace(R.id.content_lecdashboard, sharedCardsFragment).commit();
+//            Toast.makeText(LECDashboard.this, "Shared LEC Cards", Toast.LENGTH_SHORT).show();
 
 
         }   else if (id == R.id.nav_logout) {

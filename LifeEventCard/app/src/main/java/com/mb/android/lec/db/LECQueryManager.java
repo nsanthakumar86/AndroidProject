@@ -58,6 +58,22 @@ public class LECQueryManager {
         return lecStoredCard;
     }
 
+    public static Long saveSharedLECCard(String lecSharedCardAsString){
+        LECSharedCard lecSharedCard = new LECSharedCard(lecSharedCardAsString, UserSession.getInstance().getActiveUser().getId()+"");
+
+        return lecSharedCard.save();
+    }
+
+    public static List<LECSharedCard> getAllSharedCardsByUser(Long userId){
+        List<LECSharedCard> lecSharedCards = LECSharedCard.find(LECSharedCard.class, "user_Id=?", userId.toString());
+        return  lecSharedCards;
+    }
+
+    public static LECSharedCard getSharedLECCard(Long id){
+        LECSharedCard lecSharedCard = LECSharedCard.findById(LECSharedCard.class, id);
+        return lecSharedCard;
+    }
+
     public static void deleteLECCard(Long id){
         try {
             LECStoredCard lecStoredCard = LECStoredCard.findById(LECStoredCard.class, id);

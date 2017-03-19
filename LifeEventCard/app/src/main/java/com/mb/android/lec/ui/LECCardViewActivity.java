@@ -1,14 +1,20 @@
 package com.mb.android.lec.ui;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +26,19 @@ import android.widget.Toast;
 import com.mb.android.lec.R;
 import com.mb.android.lec.dao.Cards;
 import com.mb.android.lec.db.LECQueryManager;
+import com.mb.android.lec.util.LECStorage;
+import com.mb.android.lec.util.LECZipManager;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+
+import static com.mb.android.lec.util.LECStorage.getRandamLECFileNameToShare;
 
 public class LECCardViewActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -139,9 +158,222 @@ public class LECCardViewActivity extends AppCompatActivity implements View.OnCli
                 LECQueryManager.deleteLECCard(cardID);
                 finish();
                 break;
+            case R.id.action_share:
+                LECCardShareTask lecCardShareTask = new LECCardShareTask(LECCardViewActivity.this, selectedCard);
+                lecCardShareTask.execute();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    private class LECCardShareTask extends AsyncTask<Void, Void, File>
+    {
+        private Cards sharingCard;
+        private Context context;
+        private ProgressDialog progressDialog;
+        LECCardShareTask(Context context, Cards cards){
+            this.context = context;
+            this.sharingCard = cards;
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Please Wait...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected File doInBackground(Void... params) {
+
+            File folder = shareCardViaBluetooth();
+            if(folder != null){
+                File[] filesToSend = new File(folder.getAbsolutePath()).listFiles();
+
+//                ArrayList<Uri> files = new ArrayList<Uri>();
+                String[] compressFiles = new String[filesToSend.length];
+                int i = 0;
+                for (File file : filesToSend) {
+//                    Uri uri = Uri.fromFile(file);
+//                    files.add(uri);
+                    compressFiles[i++] = file.getAbsolutePath();
+                }
+                File zipFile = new File(folder.getAbsolutePath() + ".zip");
+                try {
+                    LECZipManager.zip(compressFiles, zipFile.getAbsolutePath());
+                    deleteDirectory(folder);
+                    return  zipFile;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+        public void writeToFile(File path, String data)
+        {
+
+
+            final File file = new File(path, LECStorage.lecCardInfoFile);
+
+            // Save your stream, don't forget to flush() it before closing it.
+
+            try
+            {
+                file.createNewFile();
+                FileOutputStream fOut = new FileOutputStream(file);
+                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+                myOutWriter.append(data);
+
+                myOutWriter.close();
+
+                fOut.flush();
+                fOut.close();
+            }
+            catch (IOException e)
+            {
+                Log.e("Exception", "File write failed: " + e.toString());
+            }
+        }
+        public  boolean deleteDirectory(File path) {
+            if( path.exists() ) {
+                File[] files = path.listFiles();
+                if (files == null) {
+                    return true;
+                }
+                for(int i=0; i<files.length; i++) {
+                    if(files[i].isDirectory()) {
+                        deleteDirectory(files[i]);
+                    }
+                    else {
+                        files[i].delete();
+                    }
+                }
+            }
+            return( path.delete() );
+        }
+
+        @Override
+        protected void onPostExecute(File shareFile) {
+            progressDialog.dismiss();
+
+            if(shareFile != null) {
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("application/zip");
+                sharingIntent.setPackage("com.android.bluetooth");
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(shareFile));
+                startActivity(Intent.createChooser(sharingIntent, "Share LEC Card"));
+            }
+        }
+
+        private File shareCardViaBluetooth(){
+            File folder = makeTempFolder();
+            if(folder != null){
+                makeLECShareFolder(folder);
+
+            }
+            return folder;
+        }
+
+        private void makeLECShareFolder(File folder){
+            if(!TextUtils.isEmpty(selectedCard.lecCardImg1)){
+                File imgSrc = new File(selectedCard.lecCardImg1);
+                String fileName = imgSrc.getName();
+                File imgDest = new File(folder, fileName);
+                copy(imgSrc, imgDest);
+
+            }
+            if(!TextUtils.isEmpty(selectedCard.lecCardImg2)){
+                File imgSrc = new File(selectedCard.lecCardImg2);
+                String fileName = imgSrc.getName();
+                File imgDest = new File(folder, fileName);
+                copy(imgSrc, imgDest);
+            }
+            if(!TextUtils.isEmpty(selectedCard.lecCardImg3)){
+                File imgSrc = new File(selectedCard.lecCardImg3);
+                String fileName = imgSrc.getName();
+                File imgDest = new File(folder, fileName);
+                copy(imgSrc, imgDest);
+            }
+            if(!TextUtils.isEmpty(selectedCard.lecCardImg4)){
+                File imgSrc = new File(selectedCard.lecCardImg4);
+                String fileName = imgSrc.getName();
+                File imgDest = new File(folder, fileName);
+                copy(imgSrc, imgDest);
+            }
+            if(!TextUtils.isEmpty(selectedCard.lecAudio)){
+                File imgSrc = new File(selectedCard.lecAudio);
+                String fileName = imgSrc.getName();
+                File imgDest = new File(folder, fileName);
+                copy(imgSrc, imgDest);
+            }
+
+            writeToFile(folder, selectedCard.getCardsJson());
+        }
+
+        public void copy(File src, File dst)  {
+
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = new FileInputStream(src);
+                out = new FileOutputStream(dst);
+
+// Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if(in != null) try {
+                    in.close();
+                    in = null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if(out != null){
+                    try {
+                        out.close();
+                        out = null;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+
+        private File makeTempFolder(){
+            File folder = getRandamLECFileNameToShare();
+            boolean success = true;
+            if (!folder.exists()) {
+                success = folder.mkdirs();
+            }else {
+                File[] files = folder.listFiles();
+                if(files != null && files.length >0) {
+                    int j;
+                    for(j = 0; j < files.length; j++) {
+                        files[j].delete();
+                    }
+                }
+            }
+            if (success) {
+                // Do something on success
+                return folder;
+            } else {
+                // Do something else on failure
+                Toast.makeText(context, "System is not supporting to share. Please check your exterenal storage.", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+        }
+    }
+
     public void play(View view) {
         try{
             myPlayer = new MediaPlayer();

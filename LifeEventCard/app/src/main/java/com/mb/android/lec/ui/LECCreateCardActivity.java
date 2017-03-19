@@ -334,7 +334,7 @@ public class LECCreateCardActivity extends AppCompatActivity implements View.OnC
             String photoPath = getRealPathFromURI(LECCreateCardActivity.this,uri, true, false);
             showImage(photo, photoPath);
 
-        }else if(requestCode == LECMultiPhotoSelectActivity.GALLERY_REQUEST_CODE /*&& resultCode == LECMultiPhotoSelectActivity.GALLERY_RESULT_CODE*/){
+        }else if(requestCode == LECMultiPhotoSelectActivity.GALLERY_REQUEST_CODE && resultCode == LECMultiPhotoSelectActivity.GALLERY_RESULT_CODE){
             ArrayList<String> images = data.getExtras().getStringArrayList(LECMultiPhotoSelectActivity.SELECTED_IMAGES);
             if(images == null || images.size()==0) return;
 //            Uri uri = data.getData();

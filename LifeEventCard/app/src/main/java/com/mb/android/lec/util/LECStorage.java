@@ -8,8 +8,10 @@ import com.mb.android.lec.db.LECOtherEvent;
 import com.mb.android.lec.db.LECQueryManager;
 import com.mb.android.lec.db.UserSession;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by LetX on 26-02-2017.
@@ -24,6 +26,16 @@ public class LECStorage {
 
     public static final String CARD_AUDIO_DIR = Environment.getExternalStorageDirectory().
             getAbsolutePath() + "/lecaudio";
+
+    public static final File  folder = new File(Environment.getExternalStorageDirectory() +
+    File.separator + "LECCardTemp");
+
+    public static final String lecCardInfoFile = "leccardinfo.txt";
+
+    public static File getRandamLECFileNameToShare(){
+        return new File(folder.getAbsolutePath()+File.separator + "lec"+ new Random().nextInt());
+    }
+
 
     public static ArrayList getALlStoredEvents(){
         ArrayList cardsList = new ArrayList<>();
