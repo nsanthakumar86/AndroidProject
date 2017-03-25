@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/search_lec_card"
-        android:title="Search LEC Card"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/setting_default_path"
-        android:title="Save Shared Card Location"
-        app:showAsAction="ifRoom" />
+
 
     <item
         android:id="@+id/sync"
         android:title="Load from Shared Location"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 
 </menu>

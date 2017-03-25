@@ -77,6 +77,7 @@ public class LECCreateCardActivity extends AppCompatActivity implements View.OnC
     private CheckBox locationCheck;
     private Calendar reminderCal;
     public static boolean needReminder;
+    private String locationStr;
 
 
     @Override
@@ -172,7 +173,7 @@ public class LECCreateCardActivity extends AppCompatActivity implements View.OnC
                     break;
                 case R.id.current_location_chk:
                     Intent intent = new Intent(LECCreateCardActivity.this, LECMapActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, LECMapActivity.REQ_CODE);
                     break;
             }
         }
@@ -266,7 +267,11 @@ public class LECCreateCardActivity extends AppCompatActivity implements View.OnC
         }else if(id == R.id.action_card_save){
             selectedCard.lecAudio = outputFile;
             selectedCard.notes = notes.getEditableText().toString();
+            if(locationCheck.isChecked()){
+                selectedCard.location = locationStr;
+            }
             Toast.makeText(this, "Save", Toast.LENGTH_SHORT).show();
+
             CardSave cardSave = new CardSave(LECCreateCardActivity.this, selectedCard, reminderCal);
             cardSave.execute();
             return true;
@@ -344,6 +349,10 @@ public class LECCreateCardActivity extends AppCompatActivity implements View.OnC
 
             showImage(photo, images.get(0));
 
+        }else if(requestCode == LECMapActivity.REQ_CODE && resultCode == LECMapActivity.RES_CODE_LOCATION){
+            String locationStr = data.getStringExtra(LECMapActivity.LOCATION);
+            Toast.makeText(LECCreateCardActivity.this, "loc : "+locationStr, Toast.LENGTH_SHORT).show();
+            this.locationStr = locationStr;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

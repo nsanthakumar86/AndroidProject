@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mb.android.lec.LECMapActivity;
 import com.mb.android.lec.R;
 import com.mb.android.lec.dao.Cards;
 import com.mb.android.lec.db.LECQueryManager;
@@ -44,6 +45,7 @@ public class LECCardViewActivity extends AppCompatActivity implements View.OnCli
 
     public static final String VIEW_CARD = "view_card";
     public static final String VIEW_CARD_ID = "view_card_id";
+    public static final String IS_SHARED_CARD = "isSharedCard";
     private ImageView cardImg1, cardImg2, cardImg3, cardImg4;
     private MediaPlayer myPlayer;
     private TextView text;
@@ -52,6 +54,9 @@ public class LECCardViewActivity extends AppCompatActivity implements View.OnCli
     private String outputFile;
     private Cards selectedCard;
     private Long cardID;
+    private boolean isSharedCard;
+    private TextView locate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,7 @@ public class LECCardViewActivity extends AppCompatActivity implements View.OnCli
         if(intent != null) {
             selectedCard = (Cards) intent.getParcelableExtra(VIEW_CARD);
             cardID = intent.getLongExtra(VIEW_CARD_ID,-1);
+            isSharedCard = intent.getBooleanExtra(IS_SHARED_CARD, false);
         }
 
         cardImg1 = (ImageView) findViewById(R.id.lec_card_img1);
@@ -112,6 +118,15 @@ public class LECCardViewActivity extends AppCompatActivity implements View.OnCli
             findViewById(R.id.notes).setVisibility(View.GONE);
         }
         text = (TextView) findViewById(R.id.text1);
+
+        locate = (TextView)findViewById(R.id.locate);
+        if(!TextUtils.isEmpty(selectedCard.location)){
+            locate.setVisibility(View.VISIBLE);
+        }else {
+            locate.setVisibility(View.GONE);
+        }
+
+        locate.setOnClickListener(this);
     }
 
     private Drawable getBitMapFromPath(String path){
@@ -129,6 +144,11 @@ public class LECCardViewActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.stopPlay:
                 stopPlay(v);
+                break;
+            case R.id.locate:
+                Intent intent = new Intent(LECCardViewActivity.this, LECMapActivity.class);
+                intent.putExtra(LECMapActivity.LOCATION, selectedCard.location);
+                startActivity(intent);
                 break;
             default:
 
@@ -155,7 +175,11 @@ public class LECCardViewActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 break;
             case R.id.action_delete:
-                LECQueryManager.deleteLECCard(cardID);
+                if(!isSharedCard) {
+                    LECQueryManager.deleteLECCard(cardID);
+                }else {
+                    LECQueryManager.deleteSharedLECCard(cardID);
+                }
                 finish();
                 break;
             case R.id.action_share:

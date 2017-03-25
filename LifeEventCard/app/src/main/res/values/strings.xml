@@ -20,6 +20,7 @@
     <string name="isUserLoggedinAlready">isUserLoggedinAlready</string>
     <string name="title_activity_leclogin">Sign in</string>
     <string name="loggedinuser_mailid">loggedin_mailid</string>
+    <string name="lec_shared_location">lec_shared_location</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -140,4 +141,6 @@
     <string name="lec_profile">Profile</string>
     <string name="lec_create">Create Card</string>
     <string name="title_activity_lecmap">Location</string>
+    <string name="title_activity_lecshared_card_location_setting">"LEC Card Shared Location "
+    </string>
 </resources>

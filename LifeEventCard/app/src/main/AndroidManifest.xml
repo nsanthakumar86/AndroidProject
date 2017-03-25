@@ -17,7 +17,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature android:name="android.hardware.location.gps" />
 
@@ -100,7 +100,11 @@
 
         <activity
             android:name=".LECMapActivity"
-            android:label="@string/title_activity_lecmap"></activity>
+            android:label="@string/title_activity_lecmap" />
+        <activity
+            android:name=".ui.LECSharedCardLocationSetting"
+            android:label="@string/title_activity_lecshared_card_location_setting"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

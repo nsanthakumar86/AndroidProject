@@ -30,6 +30,8 @@ public class Cards implements Parcelable {
 
     public String notes="";
 
+    public String location = "";
+
     public Cards(String cardName, String cardDetails, CardType cardType){
         this.cardName = cardName;
         this.cardDetails = cardDetails;
@@ -65,6 +67,7 @@ public class Cards implements Parcelable {
         dest.writeString(lecCardImg4);
         dest.writeString(lecAudio);
         dest.writeString(notes);
+        dest.writeString(location);
     }
 
     protected Cards(Parcel in) {
@@ -79,6 +82,7 @@ public class Cards implements Parcelable {
         this.lecCardImg4 = in.readString();
         this.lecAudio = in.readString();
         this.notes = in.readString();
+        this.location = in.readString();
 
     }
 
@@ -105,6 +109,7 @@ public class Cards implements Parcelable {
             cardsJson.put("lecCardImg4",this.lecCardImg4);
             cardsJson.put("lecAudio",this.lecAudio);
             cardsJson.put("notes",this.notes);
+            cardsJson.put("location",this.location);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -121,6 +126,8 @@ public class Cards implements Parcelable {
             this.lecCardImg4 = cardJson.getString("lecCardImg4");
             this.lecAudio = cardJson.getString("lecAudio");
             this.notes = cardJson.getString("notes");
+            this.location = cardJson.getString("location");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -28,7 +28,7 @@ public class LECStorage {
             getAbsolutePath() + "/lecaudio";
 
     public static final File  folder = new File(Environment.getExternalStorageDirectory() +
-    File.separator + "LECCardTemp");
+    File.separator + "leccardtemp");
 
     public static final String lecCardInfoFile = "leccardinfo.txt";
 

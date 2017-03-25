@@ -19,6 +19,8 @@ import com.mb.android.lec.util.LECSharedPreferenceManager;
 
 public class LECUserRegisterActivity extends AppCompatActivity {
 
+    public static final int REQ_CODE_REGISTER = 444;
+    public static final int RESULT_CODE_REGISTER_SUCCESS = 555;
     private EditText editTxtFName;
     private EditText editTxtLName;
     private EditText editTxtEmail;
@@ -174,6 +176,7 @@ public class LECUserRegisterActivity extends AppCompatActivity {
         LECSharedPreferenceManager.loggedInLECUser(LECUserRegisterActivity.this, email);
         Intent intent = new Intent(LECUserRegisterActivity.this, LECDashboard.class);
         startActivity(intent);
+        setResult(RESULT_CODE_REGISTER_SUCCESS);
         finish();
     }
 

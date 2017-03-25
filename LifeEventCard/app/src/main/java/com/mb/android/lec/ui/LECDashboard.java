@@ -124,7 +124,9 @@ public class LECDashboard extends AppCompatActivity
         lecProfileFragment.setListener(new LECProfileFragment.OnFragmentInteractionListener() {
             @Override
             public void onProfileImageChanged() {
-                final LECUser lecUser = UserSession.getInstance().getActiveUser();
+                final String emailId = LECSharedPreferenceManager.getLoggedinUserMailId(LECDashboard.this);
+                final LECUser lecUser = LECQueryManager.getUserByMailId(emailId);
+                 UserSession.getInstance().setActiveUser(lecUser);
                 if(!TextUtils.isEmpty(lecUser.getProfileImg())){
                     ImageView userImage = (ImageView)headerView.findViewById(R.id.imageView);
                     Bitmap bitmap = BitmapFactory.decodeFile(lecUser.getProfileImg());
@@ -207,7 +209,11 @@ public class LECDashboard extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_lecdashboard, savedCardsFragment).commit();
 
 
-        } else if (id == R.id.nav_lec_shared_cards) {
+        }else if(id == R.id.nav_shared_card_location){
+            Intent intent  = new Intent(LECDashboard.this, LECSharedCardLocationSetting.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_lec_shared_cards) {
 
             if(fab.isShown())
                 fab.hide();

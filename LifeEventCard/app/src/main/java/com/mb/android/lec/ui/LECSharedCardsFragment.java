@@ -3,6 +3,7 @@ package com.mb.android.lec.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,9 +29,11 @@ import com.mb.android.lec.db.LECQueryManager;
 import com.mb.android.lec.db.LECSharedCard;
 import com.mb.android.lec.db.LECStoredCard;
 import com.mb.android.lec.db.UserSession;
+import com.mb.android.lec.util.LECSharedPreferenceManager;
 import com.mb.android.lec.util.LECStorage;
 import com.mb.android.lec.util.LECZipManager;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +46,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -125,10 +129,12 @@ public class LECSharedCardsFragment extends Fragment {
 
                 if(files != null && files.length >0){
                     List<File> fileList = Arrays.asList(files);
+                    final List<File> sharedCards = new ArrayList<File>();
                     for(File file:fileList) {
                         Log.d(TAG, "LEC-FILE : " +file.getAbsolutePath());
                         try {
                             LECZipManager.unzip(file.getAbsolutePath(), LECStorage.CARD_SHARED_DIR+File.separator+ FilenameUtils.removeExtension(file.getName()));
+                            sharedCards.add(new File(LECStorage.CARD_SHARED_DIR+File.separator+ FilenameUtils.removeExtension(file.getName())));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -140,28 +146,22 @@ public class LECSharedCardsFragment extends Fragment {
                     }
 
                     //Create a Cards from shared folder and delete.
-                    final FilenameFilter f1 = new FilenameFilter() {
-                        @Override
-                        public boolean accept(File dir, String name) {
-                            return true;
-                        }
-                    };
-                    final FilenameFilter f2 = new FilenameFilter() {
-                        @Override
-                        public boolean accept(File dir, String name) {
-                            if(name.contains(LECStorage.lecCardInfoFile))
-                                return true;
-                            else
-                                return false;
-                        }
-                    };
-                    File sharedCardsPath = new File(LECStorage.CARD_SHARED_DIR);
-                    List<File> sharedCards = Arrays.asList(sharedCardsPath.listFiles(f1));
+
+
 
                     if(sharedCards != null && sharedCards.size()>0){
                         for(File cardFolder : sharedCards){
                             Log.d(TAG, "card name:"+cardFolder.getName());
 
+                            final FilenameFilter f2 = new FilenameFilter() {
+                                @Override
+                                public boolean accept(File dir, String name) {
+                                    if(name.contains(LECStorage.lecCardInfoFile))
+                                        return true;
+                                    else
+                                        return false;
+                                }
+                            };
                             List<File> infoFile = Arrays.asList(cardFolder.listFiles(f2));
                             if(infoFile != null && infoFile.size() > 0){
 //                            FilenameUtils.
@@ -181,6 +181,7 @@ public class LECSharedCardsFragment extends Fragment {
                                     newCard.put("lecAudio", changePath(cardFolder.getAbsolutePath(),cardJson.getString("lecAudio")));
 
                                     newCard.put("notes", cardJson.getString("notes"));
+                                    newCard.put("location", cardJson.getString("location"));
 
                                     Log.d(TAG, "JSON :"+cardJson.toString());
                                     Log.d(TAG, "CHANGE JSON :"+newCard.toString());
@@ -194,6 +195,8 @@ public class LECSharedCardsFragment extends Fragment {
 
 
                         }
+
+
                     }
                     return "Done.";
                 }else {
@@ -306,34 +309,22 @@ public class LECSharedCardsFragment extends Fragment {
 
     private static final int FILE_SELECT_CODE = 0;
 
-    private void showFileChooser() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("file/zip");
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-        try {
-            startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_SELECT_CODE);
-        } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(getActivity(), "Please install a File Manager.",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.search_lec_card){
-            showFileChooser();
-            return true;
-        }else if(id == R.id.setting_default_path){
-
-
-        }else if(id == R.id.sync){
-            LoadSharedCards loadSharedCards = new LoadSharedCards(getActivity(), LECStorage.folder);
-            loadSharedCards.execute();
+       if(id == R.id.sync){
+            String location = LECSharedPreferenceManager.getLECCardSharedLocation(getActivity());
+            if(!TextUtils.isEmpty(location)) {
+                LoadSharedCards loadSharedCards = new LoadSharedCards(getActivity(), LECStorage.folder);
+                loadSharedCards.execute();
+            }else {
+                Toast.makeText(getActivity(), "Please save the LEC Shared Card Location and try again.", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -349,10 +340,11 @@ public class LECSharedCardsFragment extends Fragment {
     private void initializeAdapter(){
         LECSharedCardsAdapter adapter = new LECSharedCardsAdapter(getActivity(), lecStoredCardList, new LECSharedCardsAdapter.LECSharedCardsListener(){
             @Override
-            public void onCardClicked(LECSharedCard lecStoredCard) {
+            public void onCardClicked(LECSharedCard lecSharedCard) {
                 Intent intent = new Intent(getActivity(), LECCardViewActivity.class);
-                intent.putExtra(LECCardViewActivity.VIEW_CARD, lecStoredCard.makeAsCard());
-                intent.putExtra(LECCardViewActivity.VIEW_CARD_ID, lecStoredCard.getId());
+                intent.putExtra(LECCardViewActivity.VIEW_CARD, lecSharedCard.makeAsCard());
+                intent.putExtra(LECCardViewActivity.VIEW_CARD_ID, lecSharedCard.getId());
+                intent.putExtra(LECCardViewActivity.IS_SHARED_CARD, true);
                 startActivity(intent);
             }
         });

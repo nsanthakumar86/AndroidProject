@@ -74,6 +74,15 @@ public class LECQueryManager {
         return lecSharedCard;
     }
 
+    public static void deleteSharedLECCard(Long id){
+        try {
+            LECSharedCard lecSharedCard = LECSharedCard.findById(LECSharedCard.class, id);
+            lecSharedCard.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void deleteLECCard(Long id){
         try {
             LECStoredCard lecStoredCard = LECStoredCard.findById(LECStoredCard.class, id);

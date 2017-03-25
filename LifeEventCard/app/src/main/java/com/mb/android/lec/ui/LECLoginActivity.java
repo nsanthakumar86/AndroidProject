@@ -96,14 +96,22 @@ public class LECLoginActivity extends AppCompatActivity implements LoaderCallbac
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LECLoginActivity.this, LECUserRegisterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, LECUserRegisterActivity.REQ_CODE_REGISTER);
             }
         });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
 
- /*   private void populateAutoComplete() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == LECUserRegisterActivity.REQ_CODE_REGISTER && resultCode == LECUserRegisterActivity.RESULT_CODE_REGISTER_SUCCESS){
+            finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /*   private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
         }

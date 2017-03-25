@@ -46,8 +46,18 @@ public class LECSharedPreferenceManager {
         UserSession.getInstance().setActiveUser(LECQueryManager.getUserByMailId(mailId));
     }
 
+    public static void saveLECCardSharedLocation(Context context, String lecCardSharedLocation){
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.lec_Preference), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(context.getString(R.string.lec_shared_location), lecCardSharedLocation);
+        editor.commit();
 
+    }
 
+    public static String getLECCardSharedLocation(Context context){
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.lec_Preference), Context.MODE_PRIVATE);
+        return preferences.getString(context.getString(R.string.lec_shared_location), null);
+    }
     public static String getLoggedinUserMailId(Context context){
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.lec_Preference), Context.MODE_PRIVATE);
         return preferences.getString(context.getString(R.string.loggedinuser_mailid), null);
