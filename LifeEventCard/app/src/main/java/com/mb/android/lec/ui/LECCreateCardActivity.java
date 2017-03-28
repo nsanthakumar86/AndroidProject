@@ -418,6 +418,7 @@ public class LECCreateCardActivity extends AppCompatActivity implements View.OnC
 
 
     public void start(View view){
+
         try {
             if(myRecorder == null){
                 myRecorder = new MediaRecorder();

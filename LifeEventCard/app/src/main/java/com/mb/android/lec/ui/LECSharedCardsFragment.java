@@ -320,7 +320,7 @@ public class LECSharedCardsFragment extends Fragment {
        if(id == R.id.sync){
             String location = LECSharedPreferenceManager.getLECCardSharedLocation(getActivity());
             if(!TextUtils.isEmpty(location)) {
-                LoadSharedCards loadSharedCards = new LoadSharedCards(getActivity(), LECStorage.folder);
+                LoadSharedCards loadSharedCards = new LoadSharedCards(getActivity(), new File(location));
                 loadSharedCards.execute();
             }else {
                 Toast.makeText(getActivity(), "Please save the LEC Shared Card Location and try again.", Toast.LENGTH_SHORT).show();
