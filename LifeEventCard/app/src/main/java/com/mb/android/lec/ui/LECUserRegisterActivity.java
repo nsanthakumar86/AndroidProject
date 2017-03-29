@@ -111,6 +111,11 @@ public class LECUserRegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if(!isValidPasswordLength(password)){
+            editTxtPwd.setError(getString(R.string.error_field_pwd_lenght));
+            editTxtPwd.requestFocus();
+            return;
+        }
         if (!isEmailValid(email)) {
             editTxtEmail.setError(getString(R.string.error_invalid_email));
             editTxtEmail.requestFocus();
@@ -183,5 +188,9 @@ public class LECUserRegisterActivity extends AppCompatActivity {
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
+    }
+
+    private boolean isValidPasswordLength(String password){
+        return  (password.length() >=4 && password.length() <= 12);
     }
 }

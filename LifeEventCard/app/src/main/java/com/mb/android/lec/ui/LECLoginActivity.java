@@ -214,7 +214,7 @@ public class LECLoginActivity extends AppCompatActivity implements LoaderCallbac
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 0;
+        return password.length() >= 4 && password.length() <= 12;
     }
 
     /**

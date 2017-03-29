@@ -4,15 +4,20 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.UiThread;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,9 +26,14 @@ import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class LECMapActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+public class LECMapActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerClickListener {
 
     public static final int REQ_CODE = 222;
     public static final int RES_CODE_LOCATION = 223;
@@ -33,6 +43,7 @@ public class LECMapActivity extends FragmentActivity implements OnMapReadyCallba
     protected LocationListener locationListener;
     private String locationStr="";
     private boolean isViewMap;
+    private String address = "Your Location";
 
 
     @Override
@@ -82,6 +93,8 @@ public class LECMapActivity extends FragmentActivity implements OnMapReadyCallba
             locationStr = cLoc.latitude+","+cLoc.longitude+"";
             mMap.addMarker(new MarkerOptions().position(cLoc).title("Your Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cLoc, 9.0f));
+            mMap.setOnMarkerClickListener(this);
+            getAddressFromLocation(cLoc.latitude, cLoc.longitude, LECMapActivity.this, handler);
         }
     }
 
@@ -110,6 +123,63 @@ public class LECMapActivity extends FragmentActivity implements OnMapReadyCallba
 //        super.onBackPressed();
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == 1){
+                address = msg.getData().getString("address");
+            }
+            super.handleMessage(msg);
+        }
+
+
+    };
+    public  void getAddressFromLocation(final double latitude, final double longitude,
+                                              final Context context, final Handler handler) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                String result = null;
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(
+                            latitude, longitude, 1);
+                    if (addressList != null && addressList.size() > 0) {
+                        Address address = addressList.get(0);
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                            sb.append(address.getAddressLine(i)).append(",");
+                        }
+                        sb.append(address.getLocality()).append(",");
+                        sb.append(address.getPostalCode()).append(",");
+                        sb.append(address.getCountryName());
+                        result = sb.toString();
+                    }
+                } catch (IOException e) {
+                    Log.e("Locate map", "Unable connect to Geocoder", e);
+                } finally {
+                    Message message = Message.obtain();
+                    message.setTarget(handler);
+                    if (result != null) {
+                        message.what = 1;
+                        Bundle bundle = new Bundle();
+                        result = "" + result;
+                        bundle.putString("address", result);
+                        message.setData(bundle);
+                    } else {
+                        message.what = 1;
+                        Bundle bundle = new Bundle();
+                        result = "Unable to get address.";
+                        bundle.putString("address", result);
+                        message.setData(bundle);
+                    }
+                    message.sendToTarget();
+                }
+            }
+        };
+        thread.start();
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -125,8 +195,10 @@ public class LECMapActivity extends FragmentActivity implements OnMapReadyCallba
         if(isViewMap){
             String[] locArr = locationStr.split(",");
             LatLng cLoc = new LatLng(Double.valueOf(locArr[0]).doubleValue(), Double.valueOf(locArr[1]).doubleValue());
-            mMap.addMarker(new MarkerOptions().position(cLoc).title("Your Location"));
+            mMap.addMarker(new MarkerOptions().position(cLoc).title(address));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cLoc, 9.0f));
+            mMap.setOnMarkerClickListener(this);
+            getAddressFromLocation(cLoc.latitude, cLoc.longitude, LECMapActivity.this, handler);
         }
 //        mMap.setMaxZoomPreference(1);
         ;
@@ -134,5 +206,11 @@ public class LECMapActivity extends FragmentActivity implements OnMapReadyCallba
 //        LatLng sydney = new LatLng(googleMap.getMyLocation().getLatitude(), googleMap.getMyLocation().getLongitude());
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.setTitle(address);
+        return false;
     }
 }

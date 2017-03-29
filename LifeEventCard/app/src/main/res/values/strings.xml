@@ -36,7 +36,7 @@
 
     <string name="error_field_email_mismatch">Email and Confirm Email should be same.</string>
     <string name="error_field_pwd_mismatch">Password and Confirm Password should be same.</string>
-
+    <string name="error_field_pwd_lenght">Password length should be limit(4 to 12 char).</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
